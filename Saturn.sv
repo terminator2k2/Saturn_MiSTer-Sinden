@@ -53,6 +53,7 @@ module emu
 	input  [11:0] HDMI_HEIGHT,
 	output        HDMI_FREEZE,
 	output        HDMI_BLACKOUT,
+	output        gun_border_en,
 
 `ifdef MISTER_FB
 	// Use framebuffer in DDRAM (USE_FB=1 in qsf)
@@ -185,6 +186,7 @@ module emu
 	assign LED_USER  = bios_download;
 	assign VGA_SCALER= 0;
 	assign HDMI_BLACKOUT = 1;
+	assign gun_border_en = status[31];
 	
 	wire [1:0] ar = status[63:62];
 	wire [7:0] arx,ary;
@@ -293,6 +295,7 @@ module emu
 		"P1o[63:62],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 		"P1O[11],320x224 Aspect,Original,Corrected;",
 		"P1O[29],Deinterlacing, Weave, Bob;",
+		"P1OV,Sinden Boarder,Off,On;",
 //		"P1O[3:1],Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 		"P1-;",
 //		"P1O[12],Border,No,Yes;",

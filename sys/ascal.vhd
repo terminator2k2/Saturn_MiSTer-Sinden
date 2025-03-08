@@ -166,6 +166,9 @@ ENTITY ascal IS
 
 		-- Border colour R G B
 		o_border   : IN unsigned(23 DOWNTO 0) := x"000000";
+		
+		-- Enable white borders for SINDEN LIGHTGUN
+		gun_border_en : IN std_logic;
 
 		------------------------------------
 		-- Framebuffer mode
@@ -1848,15 +1851,24 @@ BEGIN
 			o_hsstart<=hsstart; -- <ASYNC> ?
 			o_hsend  <=hsend; -- <ASYNC> ?
 			o_hdisp  <=hdisp; -- <ASYNC> ?
-			o_hmin   <=hmin; -- <ASYNC> ?
-			o_hmax   <=hmax; -- <ASYNC> ?
+			
 
 			o_vtotal <=vtotal; -- <ASYNC> ?
 			o_vsstart<=vsstart; -- <ASYNC> ?
 			o_vsend  <=vsend; -- <ASYNC> ?
 			o_vdisp  <=vdisp; -- <ASYNC> ?
-			o_vmin   <=vmin + BORDER_H2; -- <ASYNC> ?
-			o_vmax   <=vmax - BORDER_H2; -- <ASYNC> ?
+			
+			IF gun_border_en='1' THEN
+				o_hmin <= hmin + BORDER_H2;
+				o_hmax <= hmax - BORDER_H2;
+				o_vmin <= vmin + BORDER_V2;
+				o_vmax <= vmax - BORDER_V2;
+			ELSE
+				o_hmin <= hmin;
+				o_hmax <= hmax;
+				o_vmin <= vmin;
+				o_vmax <= vmax;
+			END IF;
 
 			o_hsize  <=o_hmax - o_hmin + 1;
 			o_vsize  <=o_vmax - o_vmin + 1;
@@ -2700,7 +2712,7 @@ BEGIN
 											  (o_vcpt=o_vsend   AND o_hcpt<o_hsstart));
 											  
 				o_bzl(0)<=to_std_logic(o_hcpt>=o_hmin-BORDER_H AND o_hcpt<=o_hmax+BORDER_H AND
-                                       o_vcpt>=o_vmin-BORDER_V AND o_vcpt<=o_vmax+BORDER_V);
+									   o_vcpt>=o_vmin-BORDER_V AND o_vcpt<=o_vmax+BORDER_V);
                                                 
 
 				o_vss<=to_std_logic(o_vcpt_pre2>=o_vmin AND o_vcpt_pre2<=o_vmax);
@@ -2914,15 +2926,15 @@ BEGIN
 				END CASE;
 
 				IF o_pev(11)='0' THEN
-				   IF o_bzl(11)='1' THEN
+				   IF o_bzl(11)='1' AND gun_border_en='1' THEN
 						o_r<=x"FF";
 						o_g<=x"FF";
 						o_b<=x"FF";
 					ELSE
-					o_r<=o_border(23 DOWNTO 16); -- Copy border colour
-					o_g<=o_border(15 DOWNTO 8);
-					o_b<=o_border(7  DOWNTO 0);
-				END IF;
+						o_r<=o_border(23 DOWNTO 16); -- Copy border colour
+						o_g<=o_border(15 DOWNTO 8);
+						o_b<=o_border(7  DOWNTO 0);
+					END IF;
 			END IF;	
 
 				----------------------------------------------------
