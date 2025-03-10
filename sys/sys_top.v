@@ -1836,7 +1836,7 @@ emu emu
 
 	.USER_OUT(user_out),
 	.USER_IN(user_in),
-	.gun_border_en(gun_border_en),
+	.GUN_BORDER_EN(gun_border_en),
 	
 	
 );

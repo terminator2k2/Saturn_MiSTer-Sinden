@@ -53,7 +53,7 @@ module emu
 	input  [11:0] HDMI_HEIGHT,
 	output        HDMI_FREEZE,
 	output        HDMI_BLACKOUT,
-	output        gun_border_en,
+	output        GUN_BORDER_EN,
 
 `ifdef MISTER_FB
 	// Use framebuffer in DDRAM (USE_FB=1 in qsf)
@@ -186,7 +186,7 @@ module emu
 	assign LED_USER  = bios_download;
 	assign VGA_SCALER= 0;
 	assign HDMI_BLACKOUT = 1;
-	assign gun_border_en = status[31];
+	assign GUN_BORDER_EN = status[31];
 	
 	wire [1:0] ar = status[63:62];
 	wire [7:0] arx,ary;
