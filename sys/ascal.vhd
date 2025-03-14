@@ -1848,8 +1848,8 @@ BEGIN
 			o_hsstart<=hsstart; -- <ASYNC> ?
 			o_hsend  <=hsend; -- <ASYNC> ?
 			o_hdisp  <=hdisp; -- <ASYNC> ?
-			o_hmin   <=hmin; -- <ASYNC> ?
-			o_hmax   <=hmax; -- <ASYNC> ?
+			o_hmin   <=hmin + BORDER_H2; -- <ASYNC> ?
+                        o_hmax   <=hmax - BORDER_H2; -- <ASYNC> ?
 
 			o_vtotal <=vtotal; -- <ASYNC> ?
 			o_vsstart<=vsstart; -- <ASYNC> ?
